@@ -1,0 +1,42 @@
+---
+title: "ENVS193DS final"
+author: Sophie Pardehpoosh
+date: "2026-03-13"
+format:
+  html:
+    toc: true # use this to display a table of contents
+execute:
+  message: false # make sure messages don't show up
+  warning: false # make sure warnings don't show up
+---
+
+## [Github repository](https://github.com/spardehpoosh/ENVS-193DS_winter-2026_final.git)
+
+# Set up
+
+```{r}
+#| label: reading in packages and data
+#| message: false
+
+library(tidyverse) # general use
+library(janitor) # cleaning data frames
+library(here) # file/folder organization
+library(readxl) # reading .xlsx files
+
+# reading in data
+kelp <- read_csv(here("data", "kelp_data.csv")) # storing kelp data as an object called kelp for problem 2
+```
+
+
+# Problem 1. Research Writing 
+
+
+
+
+
+
+
+
+
+
+
