@@ -30,6 +30,17 @@ kelp <- read_csv(here("data", "kelp_data.csv")) # storing kelp data as an object
 
 # Problem 1. Research Writing 
 
+## a. Transparent statistical methods
+
+In part 1, my coworker used simple linear regression to determine whether or not precipitation predicts flooded wetland area. It is "simple" since there is one predictor. 
+
+In part 2, they used a Kruskal-Wallis test to determine whether medians differed accross water year clasification. Since they were comparing more than two predictors they would use ANOVA but since they are comparing medians rather than means, they need the non parametric version which is Kruskal Wallis. 
+
+
+## b. Figure needed
+
+I would suggest that my coworkers includes a box plot comparing median flooded wetland area across the five water year classifications. The y-axis would have the flooded wetland area (m^2^), while the x axis would label the five water classifications. There would be five boxes on the plot. Each of the five would have a line for the median, with upper and lower quartiles at the top and bottom of the box. Individual data points would be layed on top of the box plots to visualize the raw data. 
+
 
 
 
