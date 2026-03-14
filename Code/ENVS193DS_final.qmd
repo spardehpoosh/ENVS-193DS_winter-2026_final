@@ -47,7 +47,7 @@ Flooded wetland area (m^2^) did not change with precipitation (linear regression
 Median flooded wetland area (m^2^) did not differ among water year clasifications  (wet, above normal, below normal, dry, critical drought) (Kruskal-Wallis test, $\chi$^2^(df) = test statistic, p = 0.12, $\alpha$ = significance level).
 
 
-## d. interpretation
+## d. Interpretation
 
 Wetland management type is a nominnal categorical variable that could influence flooded area of a wetland. In the paper, they state that local wetland management practices impact wetland flooding, and that "semi-permanent wetlands" is a management type that would increase flooded area during parts of the year. 
 
@@ -57,6 +57,7 @@ Wetland management type is a nominnal categorical variable that could influence 
 ## a. Cleaning and summarizing
 
 ```{r}
+#| label: cleaning and summarizing
 
 kelp_clean <- kelp |>  # creating kelp_clean data set from kelp data
   clean_names() |> # cleaning the column names so only lower case letters and underscores are used
@@ -66,7 +67,7 @@ kelp_clean <- kelp |>  # creating kelp_clean data set from kelp data
   site == "IVEE" ~ "Isla Vista",
   site == "CARP" ~ "Carpinteria"
 )) |> 
-  filter(!(date == "2000-09-22" & transect == "6" & quad == "40")) |> # filtering to only include observations from 2000-09-22 date at transect 6 and quadrat 40 
+  filter(!(date == "2000-09-22" & transect == "6" & quad == "40")) |> # filtering out frond observations from date 2000-09-22 at transect 6 and quadrat 40 
   mutate(site_name = as_factor(site_name), # making sure that categorical variables are factors
        site_name = fct_relevel(site_name, # order of factor levels
                                "Naples", "Isla Vista", "Carpinteria")) |> 
@@ -77,6 +78,47 @@ kelp_clean <- kelp |>  # creating kelp_clean data set from kelp data
 slice_sample(kelp_clean, n=5) # displaying 5 random rows of the summarized and cleaned data frame 
 
 ```
+
+## b. Understanding the data
+
+We filtered out frond observations from the date 2000-09-22 in transect 6 in quad 40 because there is a missing value for fronds. In the column for "fronds" for that date, transect and quad, the value is -99999. In the "methods and protols" section of the dataset page, they state "The count values were given a NA (-99999) if: (1) data were not collected for a particular species or (2) a datasheet was lost" 
+
+## c. Visualize the data
+
+```{r}
+#| label: fronds figure
+
+# base layer: ggplot
+ggplot(data = kelp_clean, # making figure from kelp_clean data set
+       aes(x = year, # having date on the x-axis
+           y = mean_fronds, # mean fronds on the y-axis
+           color = site_name)) + # different colors for each site 
+  # first layer: points
+  geom_point() +
+  # second layer: lines 
+  geom_line() + 
+  labs(x = "Year", # relabelling the x-axis
+       y = "Mean kelp fronds per year", # relabelling the y-axis
+       title = "Sites vary in mean kelp fronds per year", # adding a title to the figure 
+       color = "Site") + # capitalizing the word "site" in the key 
+  theme_minimal() + # theme for grid with no border
+  theme(legend.position = "right", # putting the legend on the right
+        panel.background = element_blank(), # getting rid of panel background
+        plot.title = element_text(hjust = 0.5), # centering title
+        text = element_text(family = "Times")) + # changing font
+   scale_color_manual( # changing the color of each site line
+    values = c("Isla Vista" = "tan", # changing color of line for Isla Vista 
+               "Naples" = "aquamarine3", #changing color of line for Naples
+               "Carpinteria" = "darkgrey"))  # changing color of line for Santa Cruz - Diablo
+```
+
+
+
+
+
+
+
+
 
 
 

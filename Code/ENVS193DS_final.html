@@ -120,11 +120,13 @@ window.Quarto = {
   <li><a href="#a.-transparent-statistical-methods" id="toc-a.-transparent-statistical-methods" class="nav-link" data-scroll-target="#a.-transparent-statistical-methods">a. Transparent statistical methods</a></li>
   <li><a href="#b.-figure-needed" id="toc-b.-figure-needed" class="nav-link" data-scroll-target="#b.-figure-needed">b. Figure needed</a></li>
   <li><a href="#c.-suggestions-for-rewriting" id="toc-c.-suggestions-for-rewriting" class="nav-link" data-scroll-target="#c.-suggestions-for-rewriting">c.&nbsp;Suggestions for rewriting</a></li>
-  <li><a href="#d.-interpretation" id="toc-d.-interpretation" class="nav-link" data-scroll-target="#d.-interpretation">d.&nbsp;interpretation</a></li>
+  <li><a href="#d.-interpretation" id="toc-d.-interpretation" class="nav-link" data-scroll-target="#d.-interpretation">d.&nbsp;Interpretation</a></li>
   </ul></li>
   <li><a href="#problem-2.-data-visualization" id="toc-problem-2.-data-visualization" class="nav-link" data-scroll-target="#problem-2.-data-visualization">Problem 2. Data visualization</a>
   <ul class="collapse">
   <li><a href="#a.-cleaning-and-summarizing" id="toc-a.-cleaning-and-summarizing" class="nav-link" data-scroll-target="#a.-cleaning-and-summarizing">a. Cleaning and summarizing</a></li>
+  <li><a href="#b.-understanding-the-data" id="toc-b.-understanding-the-data" class="nav-link" data-scroll-target="#b.-understanding-the-data">b. Understanding the data</a></li>
+  <li><a href="#c.-visualize-the-data" id="toc-c.-visualize-the-data" class="nav-link" data-scroll-target="#c.-visualize-the-data">c.&nbsp;Visualize the data</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -193,7 +195,7 @@ window.Quarto = {
 <p>Flooded wetland area (m<sup>2</sup>) did not change with precipitation (linear regression, F(df, df) = test statistic, R<sup>2</sup> = coefficient of determination, p = 0.11, <span class="math inline">\(\alpha\)</span> = significance level). Median flooded wetland area (m<sup>2</sup>) did not differ among water year clasifications (wet, above normal, below normal, dry, critical drought) (Kruskal-Wallis test, <span class="math inline">\(\chi\)</span><sup>2</sup>(df) = test statistic, p = 0.12, <span class="math inline">\(\alpha\)</span> = significance level).</p>
 </section>
 <section id="d.-interpretation" class="level2">
-<h2 class="anchored" data-anchor-id="d.-interpretation">d.&nbsp;interpretation</h2>
+<h2 class="anchored" data-anchor-id="d.-interpretation">d.&nbsp;Interpretation</h2>
 <p>Wetland management type is a nominnal categorical variable that could influence flooded area of a wetland. In the paper, they state that local wetland management practices impact wetland flooding, and that “semi-permanent wetlands” is a management type that would increase flooded area during parts of the year.</p>
 </section>
 </section>
@@ -210,7 +212,7 @@ window.Quarto = {
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  site <span class="sc">==</span> <span class="st">"IVEE"</span> <span class="sc">~</span> <span class="st">"Isla Vista"</span>,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  site <span class="sc">==</span> <span class="st">"CARP"</span> <span class="sc">~</span> <span class="st">"Carpinteria"</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(date <span class="sc">==</span> <span class="st">"2000-09-22"</span> <span class="sc">&amp;</span> transect <span class="sc">==</span> <span class="st">"6"</span> <span class="sc">&amp;</span> quad <span class="sc">==</span> <span class="st">"40"</span>)) <span class="sc">|&gt;</span> <span class="co"># filtering to only include observations from 2000-09-22 date at transect 6 and quadrat 40 </span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(date <span class="sc">==</span> <span class="st">"2000-09-22"</span> <span class="sc">&amp;</span> transect <span class="sc">==</span> <span class="st">"6"</span> <span class="sc">&amp;</span> quad <span class="sc">==</span> <span class="st">"40"</span>)) <span class="sc">|&gt;</span> <span class="co"># filtering out frond observations from date 2000-09-22 at transect 6 and quadrat 40 </span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_name =</span> <span class="fu">as_factor</span>(site_name), <span class="co"># making sure that categorical variables are factors</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">site_name =</span> <span class="fu">fct_relevel</span>(site_name, <span class="co"># order of factor levels</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"Naples"</span>, <span class="st">"Isla Vista"</span>, <span class="st">"Carpinteria"</span>)) <span class="sc">|&gt;</span> </span>
@@ -223,11 +225,49 @@ window.Quarto = {
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Carpinteria  2018        4.21
-2 Naples       2010        5.27
-3 Naples       2015       10.6 
-4 Naples       2005       10.2 
-5 Naples       2014        8.76</code></pre>
+1 Isla Vista   2011      9.63  
+2 Carpinteria  2008      6.03  
+3 Naples       2001      0.0606
+4 Naples       2012     10.5   
+5 Carpinteria  2009      9.43  </code></pre>
+</div>
+</div>
+</section>
+<section id="b.-understanding-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="b.-understanding-the-data">b. Understanding the data</h2>
+<p>We filtered out frond observations from the date 2000-09-22 in transect 6 in quad 40 because there is a missing value for fronds. In the column for “fronds” for that date, transect and quad, the value is -99999. In the “methods and protols” section of the dataset page, they state “The count values were given a NA (-99999) if: (1) data were not collected for a particular species or (2) a datasheet was lost”</p>
+</section>
+<section id="c.-visualize-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="c.-visualize-the-data">c.&nbsp;Visualize the data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># base layer: ggplot</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> kelp_clean, <span class="co"># making figure from kelp_clean data set</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="co"># having date on the x-axis</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> mean_fronds, <span class="co"># mean fronds on the y-axis</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> site_name)) <span class="sc">+</span> <span class="co"># different colors for each site </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first layer: points</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second layer: lines </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="co"># relabelling the x-axis</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean kelp fronds per year"</span>, <span class="co"># relabelling the y-axis</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Sites vary in mean kelp fronds per year"</span>, <span class="co"># adding a title to the figure </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Site"</span>) <span class="sc">+</span> <span class="co"># capitalizing the word "site" in the key </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="co"># theme for grid with no border</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>, <span class="co"># putting the legend on the right</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>(), <span class="co"># getting rid of panel background</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>), <span class="co"># centering title</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Times"</span>)) <span class="sc">+</span> <span class="co"># changing font</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_color_manual</span>( <span class="co"># changing the color of each site line</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Isla Vista"</span> <span class="ot">=</span> <span class="st">"tan"</span>, <span class="co"># changing color of line for Isla Vista </span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Naples"</span> <span class="ot">=</span> <span class="st">"aquamarine3"</span>, <span class="co">#changing color of line for Naples</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Carpinteria"</span> <span class="ot">=</span> <span class="st">"darkgrey"</span>))  <span class="co"># changing color of line for Santa Cruz - Diablo</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ENVS193DS_final_files/figure-html/fronds%20figure-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
