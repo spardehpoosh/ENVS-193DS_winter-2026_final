@@ -120,6 +120,11 @@ window.Quarto = {
   <li><a href="#a.-transparent-statistical-methods" id="toc-a.-transparent-statistical-methods" class="nav-link" data-scroll-target="#a.-transparent-statistical-methods">a. Transparent statistical methods</a></li>
   <li><a href="#b.-figure-needed" id="toc-b.-figure-needed" class="nav-link" data-scroll-target="#b.-figure-needed">b. Figure needed</a></li>
   <li><a href="#c.-suggestions-for-rewriting" id="toc-c.-suggestions-for-rewriting" class="nav-link" data-scroll-target="#c.-suggestions-for-rewriting">c.&nbsp;Suggestions for rewriting</a></li>
+  <li><a href="#d.-interpretation" id="toc-d.-interpretation" class="nav-link" data-scroll-target="#d.-interpretation">d.&nbsp;interpretation</a></li>
+  </ul></li>
+  <li><a href="#problem-2.-data-visualization" id="toc-problem-2.-data-visualization" class="nav-link" data-scroll-target="#problem-2.-data-visualization">Problem 2. Data visualization</a>
+  <ul class="collapse">
+  <li><a href="#a.-cleaning-and-summarizing" id="toc-a.-cleaning-and-summarizing" class="nav-link" data-scroll-target="#a.-cleaning-and-summarizing">a. Cleaning and summarizing</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -185,7 +190,46 @@ window.Quarto = {
 </section>
 <section id="c.-suggestions-for-rewriting" class="level2">
 <h2 class="anchored" data-anchor-id="c.-suggestions-for-rewriting">c.&nbsp;Suggestions for rewriting</h2>
-<p>Flooded wetland area did not change with precipitation (linear regression, F(DF, DF) = test statistic, R<sup>2</sup> = coefficient of determination, p = 0.11, <span class="math inline">\(\alpha\)</span> = significance level). We found no difference in median flooded wetland area between water year classification (wet, above normal, below normal, dry, critical drought) (Kruskal-Wallis test, <span class="math inline">\(\chi\)</span><sup>2</sup>(df) = test statistic, p = 0.12, <span class="math inline">\(\alpha\)</span> = significance level).</p>
+<p>Flooded wetland area (m<sup>2</sup>) did not change with precipitation (linear regression, F(df, df) = test statistic, R<sup>2</sup> = coefficient of determination, p = 0.11, <span class="math inline">\(\alpha\)</span> = significance level). Median flooded wetland area (m<sup>2</sup>) did not differ among water year clasifications (wet, above normal, below normal, dry, critical drought) (Kruskal-Wallis test, <span class="math inline">\(\chi\)</span><sup>2</sup>(df) = test statistic, p = 0.12, <span class="math inline">\(\alpha\)</span> = significance level).</p>
+</section>
+<section id="d.-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="d.-interpretation">d.&nbsp;interpretation</h2>
+<p>Wetland management type is a nominnal categorical variable that could influence flooded area of a wetland. In the paper, they state that local wetland management practices impact wetland flooding, and that “semi-permanent wetlands” is a management type that would increase flooded area during parts of the year.</p>
+</section>
+</section>
+<section id="problem-2.-data-visualization" class="level1">
+<h1>Problem 2. Data visualization</h1>
+<section id="a.-cleaning-and-summarizing" class="level2">
+<h2 class="anchored" data-anchor-id="a.-cleaning-and-summarizing">a. Cleaning and summarizing</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kelp_clean <span class="ot">&lt;-</span> kelp <span class="sc">|&gt;</span>  <span class="co"># creating kelp_clean data set from kelp data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="co"># cleaning the column names so only lower case letters and underscores are used</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(site <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IVEE"</span>, <span class="st">"NAPL"</span>, <span class="st">"CARP"</span>)) <span class="sc">|&gt;</span><span class="co"># filter to only include these 3 sites</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_name =</span> <span class="fu">case_when</span>( <span class="co"># creating a new column called site_name and relabelling the three sites with full names</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  site <span class="sc">==</span> <span class="st">"NAPL"</span> <span class="sc">~</span> <span class="st">"Naples"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  site <span class="sc">==</span> <span class="st">"IVEE"</span> <span class="sc">~</span> <span class="st">"Isla Vista"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  site <span class="sc">==</span> <span class="st">"CARP"</span> <span class="sc">~</span> <span class="st">"Carpinteria"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(date <span class="sc">==</span> <span class="st">"2000-09-22"</span> <span class="sc">&amp;</span> transect <span class="sc">==</span> <span class="st">"6"</span> <span class="sc">&amp;</span> quad <span class="sc">==</span> <span class="st">"40"</span>)) <span class="sc">|&gt;</span> <span class="co"># filtering to only include observations from 2000-09-22 date at transect 6 and quadrat 40 </span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_name =</span> <span class="fu">as_factor</span>(site_name), <span class="co"># making sure that categorical variables are factors</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">site_name =</span> <span class="fu">fct_relevel</span>(site_name, <span class="co"># order of factor levels</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"Naples"</span>, <span class="st">"Isla Vista"</span>, <span class="st">"Carpinteria"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_name, year) <span class="sc">|&gt;</span> <span class="co"># group data by site and year so that summaries are calculated in these groups</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_fronds =</span> <span class="fu">mean</span>(fronds)) <span class="sc">|&gt;</span> <span class="co"># calculate mean number of fronds in each site/year group</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="co"># ungrouping for proceeding operations</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(kelp_clean, <span class="at">n=</span><span class="dv">5</span>) <span class="co"># displaying 5 random rows of the summarized and cleaned data frame </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  site_name    year mean_fronds
+  &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+1 Carpinteria  2018        4.21
+2 Naples       2010        5.27
+3 Naples       2015       10.6 
+4 Naples       2005       10.2 
+5 Naples       2014        8.76</code></pre>
+</div>
+</div>
 </section>
 </section>
 

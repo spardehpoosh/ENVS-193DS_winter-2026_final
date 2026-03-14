@@ -43,10 +43,40 @@ I would suggest that my coworkers includes a box plot comparing median flooded w
 
 ## c. Suggestions for rewriting
 
-Flooded wetland area did not change with precipitation (linear regression, F(DF, DF) = test statistic, R^2^ = coefficient of determination, p = 0.11, $\alpha$ = significance level). 
-We found no difference in median flooded wetland area between water year classification (wet, above normal, below normal, dry, critical drought) (Kruskal-Wallis test, $\chi$^2^(df) = test statistic, p = 0.12, $\alpha$ = significance level).
+Flooded wetland area (m^2^) did not change with precipitation (linear regression, F(df, df) = test statistic, R^2^ = coefficient of determination, p = 0.11, $\alpha$ = significance level). 
+Median flooded wetland area (m^2^) did not differ among water year clasifications  (wet, above normal, below normal, dry, critical drought) (Kruskal-Wallis test, $\chi$^2^(df) = test statistic, p = 0.12, $\alpha$ = significance level).
 
 
+## d. interpretation
+
+Wetland management type is a nominnal categorical variable that could influence flooded area of a wetland. In the paper, they state that local wetland management practices impact wetland flooding, and that "semi-permanent wetlands" is a management type that would increase flooded area during parts of the year. 
+
+
+# Problem 2. Data visualization
+
+## a. Cleaning and summarizing
+
+```{r}
+
+kelp_clean <- kelp |>  # creating kelp_clean data set from kelp data
+  clean_names() |> # cleaning the column names so only lower case letters and underscores are used
+  filter(site %in% c("IVEE", "NAPL", "CARP")) |># filter to only include these 3 sites
+  mutate(site_name = case_when( # creating a new column called site_name and relabelling the three sites with full names
+  site == "NAPL" ~ "Naples",
+  site == "IVEE" ~ "Isla Vista",
+  site == "CARP" ~ "Carpinteria"
+)) |> 
+  filter(!(date == "2000-09-22" & transect == "6" & quad == "40")) |> # filtering to only include observations from 2000-09-22 date at transect 6 and quadrat 40 
+  mutate(site_name = as_factor(site_name), # making sure that categorical variables are factors
+       site_name = fct_relevel(site_name, # order of factor levels
+                               "Naples", "Isla Vista", "Carpinteria")) |> 
+  group_by(site_name, year) |> # group data by site and year so that summaries are calculated in these groups
+  summarize(mean_fronds = mean(fronds)) |> # calculate mean number of fronds in each site/year group
+  ungroup() # ungrouping for proceeding operations
+
+slice_sample(kelp_clean, n=5) # displaying 5 random rows of the summarized and cleaned data frame 
+
+```
 
 
 
