@@ -133,6 +133,10 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#a.-response-variable" id="toc-a.-response-variable" class="nav-link" data-scroll-target="#a.-response-variable">a. Response variable</a></li>
   <li><a href="#b.-purpose-of-study" id="toc-b.-purpose-of-study" class="nav-link" data-scroll-target="#b.-purpose-of-study">b. Purpose of study</a></li>
+  <li><a href="#c.-table-of-models" id="toc-c.-table-of-models" class="nav-link" data-scroll-target="#c.-table-of-models">c.&nbsp;Table of models</a></li>
+  <li><a href="#d.-run-the-models" id="toc-d.-run-the-models" class="nav-link" data-scroll-target="#d.-run-the-models">d.&nbsp;Run the models</a></li>
+  <li><a href="#e.-select-the-best-models" id="toc-e.-select-the-best-models" class="nav-link" data-scroll-target="#e.-select-the-best-models">e. Select the best models</a></li>
+  <li><a href="#f.-check-diagnostics" id="toc-f.-check-diagnostics" class="nav-link" data-scroll-target="#f.-check-diagnostics">f.&nbsp;Check diagnostics</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -180,10 +184,13 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor) <span class="co"># cleaning data frames</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here) <span class="co"># file/folder organization</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) <span class="co"># reading .xlsx files</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>kelp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"kelp_data.csv"</span>)) <span class="co"># storing kelp data as an object called kelp for problem 2</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mopl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"MOPL_nest-site_selection_Duchardt_et_al._2019.csv"</span>)) <span class="co"># storing data for problem 3 as an object called mopl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales) <span class="co"># modifying axis labels</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects) <span class="co"># getting model predictions</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn) <span class="co"># model selection</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>kelp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"kelp_data.csv"</span>)) <span class="co"># storing kelp data as an object called kelp for problem 2</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>mopl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"MOPL_nest-site_selection_Duchardt_et_al._2019.csv"</span>)) <span class="co"># storing data for problem 3 as an object called mopl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="problem-1.-research-writing" class="level1">
@@ -232,11 +239,11 @@ window.Quarto = {
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Carpinteria  2018        4.21
-2 Naples       2021       10.5 
-3 Carpinteria  2010        3.53
-4 Isla Vista   2014       19.9 
-5 Carpinteria  2006       10.8 </code></pre>
+1 Naples       2018     17.7   
+2 Carpinteria  2002      9.79  
+3 Naples       2001      0.0606
+4 Carpinteria  2016      4.97  
+5 Naples       2012     10.5   </code></pre>
 </div>
 </div>
 </section>
@@ -287,10 +294,95 @@ window.Quarto = {
 <h1>Problem 3. Data Analysis</h1>
 <section id="a.-response-variable" class="level2">
 <h2 class="anchored" data-anchor-id="a.-response-variable">a. Response variable</h2>
-<p>0s represent available locations where nest weren’t observed, while 1s represent available locations where snowy plovers actually nested.</p>
+<p>0s represent an unused, available site, where 1s represent sites that were used.</p>
 </section>
 <section id="b.-purpose-of-study" class="level2">
 <h2 class="anchored" data-anchor-id="b.-purpose-of-study">b. Purpose of study</h2>
+<p>Visual obstruction is a continuous numerical variable. As visual obstruction increases, Mountain Plover nest site use would decrease because snowy plovers will not be able to see their predetors. It should be noted that sparse vegetation and some visual obstruction is beneficial to snowy plovers as it provides concealment. I found this in the discussion part, “our selected model indicated that plovers avoided nesting in areas with a maximum vegetation height &gt;11 cm, corresponding with an average visual obstruction of &gt;5 cm”.</p>
+<p>Distance to prarie dog colony edge is also a continuous numerical variable. As distance to prarie dog colony edge increase, Plover nest site use would decrease because they both use the same resources and prarie dogs help engineer Plover habitats, but Plover use depends on size of the prarie dog colony. This was also found in the discussion section, “Our findings reinforce the importance of black-tailed prairie dogs as engineers of Mountain Plover habitat”.</p>
+</section>
+<section id="c.-table-of-models" class="level2">
+<h2 class="anchored" data-anchor-id="c.-table-of-models">c.&nbsp;Table of models</h2>
+<p>4 models:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 21%">
+<col style="width: 32%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model number</th>
+<th style="text-align: center;">Visual Obstruction</th>
+<th style="text-align: center;">Distance to Prarie Dog Colony</th>
+<th style="text-align: center;">Predictor list</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">no predictors (null model)</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">all predictors (full model)</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">VO</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">edgedist</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="d.-run-the-models" class="level2">
+<h2 class="anchored" data-anchor-id="d.-run-the-models">d.&nbsp;Run the models</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mopl_clean <span class="ot">&lt;-</span> mopl <span class="sc">|&gt;</span> <span class="co"># starting with mopl data</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># making sure id is seen as a factor </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="co"># clean column names</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">used_bin =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    id <span class="sc">==</span> <span class="st">"used"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    id <span class="sc">==</span> <span class="st">"available"</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select to only include columns of interest </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(used_bin, edgedist, vo_nest)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="e.-select-the-best-models" class="level2">
+<h2 class="anchored" data-anchor-id="e.-select-the-best-models">e. Select the best models</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AICc</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  model0,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  model1,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  model2,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  model3</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(AICc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       df     AICc
+model2  3 363.5302
+model1  4 365.5744
+model0  2 404.6808
+model3  3 406.1991</code></pre>
+</div>
+</div>
+<p>The best model as determined by Akaike’s Information Criterion (AIC) was visual obstruction because its’ model (model2) had the lowest AIC.</p>
+</section>
+<section id="f.-check-diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="f.-check-diagnostics">f.&nbsp;Check diagnostics</h2>
 </section>
 </section>
 

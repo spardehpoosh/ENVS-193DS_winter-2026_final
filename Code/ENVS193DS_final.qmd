@@ -22,6 +22,9 @@ library(tidyverse) # general use
 library(janitor) # cleaning data frames
 library(here) # file/folder organization
 library(readxl) # reading .xlsx files
+library(scales) # modifying axis labels
+library(ggeffects) # getting model predictions
+library(MuMIn) # model selection
 
 # reading in data
 kelp <- read_csv(here("data", "kelp_data.csv")) # storing kelp data as an object called kelp for problem 2
@@ -155,17 +158,89 @@ slice_sample(
 
 ## a. Response variable
 
-0s represent available locations where nest weren't observed, while 1s represent available locations where snowy plovers actually nested. 
+0s represent an unused, available site, where 1s represent sites that were used. 
 
 ## b. Purpose of study
 
+Visual obstruction is a continuous numerical variable. As visual obstruction increases, Mountain Plover nest site use would decrease because snowy plovers will not be able to see their predetors. It should be noted that sparse vegetation and some visual obstruction is beneficial to snowy plovers as it provides concealment. I found this in the discussion part, "our selected model indicated that plovers avoided nesting in areas with a maximum vegetation height >11 cm, corresponding with an average visual obstruction of >5 cm". 
+
+Distance to prarie dog colony edge is also a continuous numerical variable. As distance to prarie dog colony edge increase, Plover nest site use would decrease because they both use the same resources and prarie dogs help engineer Plover habitats, but Plover use depends on size of the prarie dog colony. This was also found in the discussion section, "Our findings reinforce the importance of black-tailed prairie dogs as engineers of Mountain Plover habitat". 
+
+## c. Table of models
+
+4 models:
+
+| Model number | Visual Obstruction | Distance to Prarie Dog Colony |      Predictor list         |  
+|--------------|:------------------:|:-----------------------------:|:---------------------------:|  
+| 0            |                    |                               | no predictors (null model)  |
+| 1            |          X         |              X                | all predictors (full model) | 
+| 2            |          X         |                               |             VO              |   
+| 3            |                    |              X                |          edgedist           |    
+
+## d. Run the models
+
+```{r}
+#| label: cleaning
+
+mopl_clean <- mopl |> # starting with mopl data
+  # making sure id is seen as a factor 
+  clean_names() |> # clean column names
+  mutate(used_bin = case_when(
+    id == "used" ~ 1,
+    id == "available" ~ 0
+  )) |> 
+  # select to only include columns of interest 
+  select(used_bin, edgedist, vo_nest)
+
+```
 
 
+```{r}
+#| label: model fitting
+#| include: false
 
+# model 0: null model
+model0 <-lm(
+  used_bin ~ 1, # no predicotrs
+  data = mopl_clean)
 
+# model 1: all predictors
 
+model1 <-lm(
+  used_bin ~ edgedist + vo_nest,
+  data = mopl_clean)
 
+# model 2: SLA and water treatment
 
+model2 <-lm(
+  used_bin ~ vo_nest, 
+  data = mopl_clean)
+
+# model 3: SLA and species
+
+model3 <-lm(
+  used_bin ~ edgedist, 
+  data = mopl_clean)
+
+```
+
+## e. Select the best models
+
+```{r}
+#| label: model selection
+
+AICc(
+  model0,
+  model1,
+  model2,
+  model3
+) |> 
+  arrange(AICc)
+```
+
+The best model as determined by Akaike’s Information Criterion (AIC) was visual obstruction because its' model (model2) had the lowest AIC. 
+
+## f. Check diagnostics
 
 
 
