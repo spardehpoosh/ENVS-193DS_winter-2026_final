@@ -25,6 +25,7 @@ library(readxl) # reading .xlsx files
 
 # reading in data
 kelp <- read_csv(here("data", "kelp_data.csv")) # storing kelp data as an object called kelp for problem 2
+mopl <- read_csv(here("data", "MOPL_nest-site_selection_Duchardt_et_al._2019.csv")) # storing data for problem 3 as an object called mopl
 ```
 
 
@@ -112,6 +113,51 @@ ggplot(data = kelp_clean, # making figure from kelp_clean data set
                "Carpinteria" = "darkgrey"))  # changing color of line for Santa Cruz - Diablo
 ```
 
+## d. Interpretation
+
+According to the figure, Isla Vista is the site that has the most variable mean kelp fronds per year, while Carpinteria seems to have the least variable mean kelp fronds per year. 
+
+# Problem 3. Data Analysis
+
+```{r}
+#| label: exploring data
+#| include: false
+
+mopl_clean <- mopl |> # starting with mopl data
+  # making sure id is seen as a factor 
+  clean_names() |> # clean column names
+  mutate(id = as_factor(id),
+         id = fct_relevel(id, 
+                          "used",
+                          "available")) |> 
+   # select to only include columns of interest 
+  select(id, vo_nest, edgedist)
+
+```
+
+```{r}
+#| label: checking structure
+#| include: false
+
+str(mopl_clean)
+```
+
+```{r}
+#| label: displaying random rows in data frame
+#| include: false
+
+slice_sample(
+  mopl_clean,
+  n = 10)
+
+```
+
+
+## a. Response variable
+
+0s represent available locations where nest weren't observed, while 1s represent available locations where snowy plovers actually nested. 
+
+## b. Purpose of study
 
 
 
