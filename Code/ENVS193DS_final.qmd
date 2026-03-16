@@ -300,7 +300,44 @@ ggplot(mopl_clean, # starting will mopl_clean data set
 ```
 
 
-## H. Write a caption for your figure 
+## h. Write a caption for your figure 
 
 **Figure 1: Mountain Plovers have a higher probability of using nest site with lower visual obstruction.** The blue line represent the prediction using the saturated generalized linear model and the ribbon represents the 95% confidence interval of the prediction. The red points represent binary nest site occupancy data collected on Mountain Plovers (n = 86) used to build the model predictions. Citation: Duchardt, Courtney; Beck, Jeffrey; Augustine, David (2020). Data from: Mountain Plover habitat selection and nest survival in relation to weather variability and spatial attributes of Black-tailed Prairie Dog disturbance [Dataset]. Dryad. https://doi.org/10.5061/dryad.ttdz08kt7
+
+## i. Calculate model predictions
+
+```{r}
+#| label: calculated predicted probability
+
+ggpredict(model2, #use ggpredict which automatically uses 95% confidence interval using model2 which is the visual obstruction only model that had the lowest AIC
+          terms = c("vo_nest [0]")) #calculate prediction when visual obstruction = 0
+
+```
+
+## j. Interpret your results
+
+The probability of nest site occupancy at 0 visual obstruction is 73%. As visual obstruction increases, probability of nest site occupancy decreases. The model did not show a...
+
+# Problem 4. Affective and exploratory visualizations
+
+## a. Comparing visualizations
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
