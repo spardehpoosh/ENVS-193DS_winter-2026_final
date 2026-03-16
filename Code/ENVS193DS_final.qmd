@@ -207,21 +207,18 @@ model0 <-glm(
   family = binomial)
 
 # model 1: saturated model with visual obstruction and distance to prairie dog colony 
-
 model1 <-glm(
   used_bin ~ edgedist + vo_nest,
   data = mopl_clean,
   family = binomial)
 
-# model 2: visual obstruction
-
+# model 2: visual obstruction only
 model2 <-glm(
   used_bin ~ vo_nest, 
   data = mopl_clean,
   family = binomial)
 
 # model 3: distance to prairie dog colony only
-
 model3 <-glm(
   used_bin ~ edgedist, 
   data = mopl_clean,
@@ -250,21 +247,15 @@ The best model as determined by Akaike’s Information Criterion (AIC) was visua
 ```{r}
 #| label: Check diagnostics
 
-# Simulate residuals for each model
-residuals0 <- simulateResiduals(model0) # null
-residuals1 <- simulateResiduals(model1) # saturated 
+# Simulate residuals for best model (model2)
 residuals2 <- simulateResiduals(model2) # visual obstruction only
-residuals3 <- simulateResiduals(model3) # distance to prarie dog colony only
 
 #plotting each residuals model separately
-plot(residuals0)
-
-plot(residuals1)
 
 plot(residuals2)
-
-plot(residuals3)
 ```
+
+According to the DHARMa residuals, the residuals (standing in for errors) look normally distributed based on qqplot on the left. There are no significant problems detected on the residuals vs predicted plot on the right.
 
 ## g. Visualize model predictions
 
