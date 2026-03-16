@@ -259,6 +259,48 @@ According to the DHARMa residuals, the residuals (standing in for errors) look n
 
 ## g. Visualize model predictions
 
+```{r}
+#| label: visualize model predictions
+
+# generate model predictions from model 2
+preds <- ggpredict( # store model predictions in object preds 
+  model2, # use model 2
+  terms = c("vo_nest [all]")) # prediction made for all visual obstruction values
+
+# base layer: ggplot
+ggplot(mopl_clean, # starting will mopl_clean data set
+       aes(x = vo_nest, # visual obstruction on x-axis
+           y = used_bin)) + # binary nest site use on y-axis
+# first layer: points
+  geom_point(size = 1, # small points 
+             color = "brown",# color of points
+             alpha = 0.2) + # make points transparent
+# second layer: add 95% CI around the predictions data
+  geom_ribbon(data = preds, # using prediction data frame for confidence interval
+              aes(x = x, # x-axis is visual obstruction
+                  y = predicted, # y-axis is predicted site use
+                  ymin = conf.low, 
+                  ymax = conf.high), # ribbon geometry represents upper and lower limit of 95% confidence interval
+              alpha = 0.3, # transparency
+              fill = "skyblue") + # custom color for ribbon)
+  # third layer: line for model predictions
+  geom_line(data = preds, # using prediction data for line
+            aes(x = x, # x-axis is visual obstruction
+                y = predicted), # y-axis is predicted Mountain Plover nest site use
+            color = "blue") + # color for line
+  scale_y_continuous(limits = c(0,1), 
+                     breaks = c(0,1)) +
+  labs(x = "Visual Obstruction (dm)", 
+       y = "Probability of Nest Site Occupancy (1 = Yes, 0 = No)",
+       title = "Mountain Plover nest site use and predictions") +
+ # remove gridlines and apply clean theme
+  theme_light() +
+  theme(panel.grid = element_blank()) # remove any remaining gridlines
+
+```
 
 
+## H. Write a caption for your figure 
+
+**Figure 1: Mountain Plovers have a higher probability of using nest site with lower visual obstruction.** The blue line represent the prediction using the saturated generalized linear model and the ribbon represents the 95% confidence interval of the prediction. The red points represent binary nest site occupancy data collected on Mountain Plovers (n = 86) used to build the model predictions. Citation: Duchardt, Courtney; Beck, Jeffrey; Augustine, David (2020). Data from: Mountain Plover habitat selection and nest survival in relation to weather variability and spatial attributes of Black-tailed Prairie Dog disturbance [Dataset]. Dryad. https://doi.org/10.5061/dryad.ttdz08kt7
 

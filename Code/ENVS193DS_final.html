@@ -138,6 +138,7 @@ window.Quarto = {
   <li><a href="#e.-select-the-best-models" id="toc-e.-select-the-best-models" class="nav-link" data-scroll-target="#e.-select-the-best-models">e. Select the best models</a></li>
   <li><a href="#f.-check-diagnostics" id="toc-f.-check-diagnostics" class="nav-link" data-scroll-target="#f.-check-diagnostics">f.&nbsp;Check diagnostics</a></li>
   <li><a href="#g.-visualize-model-predictions" id="toc-g.-visualize-model-predictions" class="nav-link" data-scroll-target="#g.-visualize-model-predictions">g. Visualize model predictions</a></li>
+  <li><a href="#h.-write-a-caption-for-your-figure" id="toc-h.-write-a-caption-for-your-figure" class="nav-link" data-scroll-target="#h.-write-a-caption-for-your-figure">H. Write a caption for your figure</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -241,11 +242,11 @@ window.Quarto = {
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Naples       2018       17.7 
-2 Naples       2010        5.27
-3 Carpinteria  2009        9.43
-4 Isla Vista   2011        9.63
-5 Isla Vista   2022       38.3 </code></pre>
+1 Isla Vista   2017       25.0 
+2 Isla Vista   2015        8.77
+3 Isla Vista   2013        9.36
+4 Carpinteria  2002        9.79
+5 Naples       2019        4.47</code></pre>
 </div>
 </div>
 </section>
@@ -404,6 +405,53 @@ model3  2 386.1351</code></pre>
 </section>
 <section id="g.-visualize-model-predictions" class="level2">
 <h2 class="anchored" data-anchor-id="g.-visualize-model-predictions">g. Visualize model predictions</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate model predictions from model 2</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">ggpredict</span>( <span class="co"># store model predictions in object preds </span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  model2, <span class="co"># use model 2</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"vo_nest [all]"</span>)) <span class="co"># prediction made for all visual obstruction values</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># base layer: ggplot</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mopl_clean, <span class="co"># starting will mopl_clean data set</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> vo_nest, <span class="co"># visual obstruction on x-axis</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> used_bin)) <span class="sc">+</span> <span class="co"># binary nest site use on y-axis</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># first layer: points</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="co"># small points </span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"brown"</span>,<span class="co"># color of points</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="co"># make points transparent</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># second layer: add 95% CI around the predictions data</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> preds, <span class="co"># using prediction data frame for confidence interval</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="co"># x-axis is visual obstruction</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> predicted, <span class="co"># y-axis is predicted site use</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymin =</span> conf.low, </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> conf.high), <span class="co"># ribbon geometry represents upper and lower limit of 95% confidence interval</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="co"># transparency</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"skyblue"</span>) <span class="sc">+</span> <span class="co"># custom color for ribbon)</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># third layer: line for model predictions</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> preds, <span class="co"># using prediction data for line</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="co"># x-axis is visual obstruction</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> predicted), <span class="co"># y-axis is predicted Mountain Plover nest site use</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> <span class="co"># color for line</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Visual Obstruction (dm)"</span>, </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Probability of Nest Site Occupancy (1 = Yes, 0 = No)"</span>,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Mountain Plover nest site use and predictions"</span>) <span class="sc">+</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a> <span class="co"># remove gridlines and apply clean theme</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>()) <span class="co"># remove any remaining gridlines</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ENVS193DS_final_files/figure-html/visualize%20model%20predictions-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="h.-write-a-caption-for-your-figure" class="level2">
+<h2 class="anchored" data-anchor-id="h.-write-a-caption-for-your-figure">H. Write a caption for your figure</h2>
+<p><strong>Figure 1: Mountain Plovers have a higher probability of using nest site with lower visual obstruction.</strong> The blue line represent the prediction using the saturated generalized linear model and the ribbon represents the 95% confidence interval of the prediction. The red points represent binary nest site occupancy data collected on Mountain Plovers (n = 86) used to build the model predictions. Citation: Duchardt, Courtney; Beck, Jeffrey; Augustine, David (2020). Data from: Mountain Plover habitat selection and nest survival in relation to weather variability and spatial attributes of Black-tailed Prairie Dog disturbance [Dataset]. Dryad. https://doi.org/10.5061/dryad.ttdz08kt7</p>
 </section>
 </section>
 
