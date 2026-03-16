@@ -25,6 +25,7 @@ library(readxl) # reading .xlsx files
 library(scales) # modifying axis labels
 library(ggeffects) # getting model predictions
 library(MuMIn) # model selection
+library(DHARMa) # model diagnostics
 
 # reading in data
 kelp <- read_csv(here("data", "kelp_data.csv")) # storing kelp data as an object called kelp for problem 2
@@ -200,27 +201,31 @@ mopl_clean <- mopl |> # starting with mopl data
 #| include: false
 
 # model 0: null model
-model0 <-lm(
+model0 <-glm(
   used_bin ~ 1, # no predicotrs
-  data = mopl_clean)
+  data = mopl_clean,
+  family = binomial)
 
-# model 1: all predictors
+# model 1: saturated model with visual obstruction and distance to prairie dog colony 
 
-model1 <-lm(
+model1 <-glm(
   used_bin ~ edgedist + vo_nest,
-  data = mopl_clean)
+  data = mopl_clean,
+  family = binomial)
 
-# model 2: SLA and water treatment
+# model 2: visual obstruction
 
-model2 <-lm(
+model2 <-glm(
   used_bin ~ vo_nest, 
-  data = mopl_clean)
+  data = mopl_clean,
+  family = binomial)
 
-# model 3: SLA and species
+# model 3: distance to prairie dog colony only
 
-model3 <-lm(
+model3 <-glm(
   used_bin ~ edgedist, 
-  data = mopl_clean)
+  data = mopl_clean,
+  family = binomial)
 
 ```
 
@@ -242,6 +247,26 @@ The best model as determined by Akaike’s Information Criterion (AIC) was visua
 
 ## f. Check diagnostics
 
+```{r}
+#| label: Check diagnostics
+
+# Simulate residuals for each model
+residuals0 <- simulateResiduals(model0) # null
+residuals1 <- simulateResiduals(model1) # saturated 
+residuals2 <- simulateResiduals(model2) # visual obstruction only
+residuals3 <- simulateResiduals(model3) # distance to prarie dog colony only
+
+#plotting each residuals model separately
+plot(residuals0)
+
+plot(residuals1)
+
+plot(residuals2)
+
+plot(residuals3)
+```
+
+## g. Visualize model predictions
 
 
 
