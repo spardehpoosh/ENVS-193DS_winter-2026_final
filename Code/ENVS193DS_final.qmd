@@ -30,6 +30,7 @@ library(DHARMa) # model diagnostics
 # reading in data
 kelp <- read_csv(here("data", "kelp_data.csv")) # storing kelp data as an object called kelp for problem 2
 mopl <- read_csv(here("data", "MOPL_nest-site_selection_Duchardt_et_al._2019.csv")) # storing data for problem 3 as an object called mopl
+reading <- read_csv(here("data", "personal_data.csv")) # storing personal data as an object called reading for problem 4
 ```
 
 
@@ -163,7 +164,7 @@ slice_sample(
 
 ## b. Purpose of study
 
-Visual obstruction is a continuous numerical variable. As visual obstruction increases, Mountain Plover nest site use would decrease because snowy plovers will not be able to see their predetors. It should be noted that sparse vegetation and some visual obstruction is beneficial to snowy plovers as it provides concealment. I found this in the discussion part, "our selected model indicated that plovers avoided nesting in areas with a maximum vegetation height >11 cm, corresponding with an average visual obstruction of >5 cm". 
+Visual obstruction is a continuous numerical variable. As visual obstruction increases, Mountain Plover nest site use would decrease because snowy plovers will not be able to see their predators. It should be noted that sparse vegetation and some visual obstruction is beneficial to snowy plovers as it provides concealment. I found this in the discussion part, "our selected model indicated that plovers avoided nesting in areas with a maximum vegetation height >11 cm, corresponding with an average visual obstruction of >5 cm". 
 
 Distance to prarie dog colony edge is also a continuous numerical variable. As distance to prarie dog colony edge increase, Plover nest site use would decrease because they both use the same resources and prarie dogs help engineer Plover habitats, but Plover use depends on size of the prarie dog colony. This was also found in the discussion section, "Our findings reinforce the importance of black-tailed prairie dogs as engineers of Mountain Plover habitat". 
 
@@ -290,8 +291,8 @@ ggplot(mopl_clean, # starting will mopl_clean data set
             color = "blue") + # color for line
   scale_y_continuous(limits = c(0,1), 
                      breaks = c(0,1)) +
-  labs(x = "Visual Obstruction (dm)", 
-       y = "Probability of Nest Site Occupancy (1 = Yes, 0 = No)",
+  labs(x = "Visual Obstruction (cm)", 
+       y = "Probability of nest site occupancy (1 = Yes, 0 = No)",
        title = "Mountain Plover nest site use and predictions") +
  # remove gridlines and apply clean theme
   theme_light() +
@@ -316,7 +317,7 @@ ggpredict(model2, #use ggpredict which automatically uses 95% confidence interva
 
 ## j. Interpret your results
 
-The probability of nest site occupancy at 0 visual obstruction is 73%. As visual obstruction increases, probability of nest site occupancy decreases. The model did not show a...
+The probability of nest site occupancy at 0 visual obstruction is 73%. This means when there is no visual obstruction, the probability of nest site occupancy is 73%. As seen in the figure in part g, as visual obstruction increases, probability of nest site occupancy decreases. It can also be observed that at a certain point of visual obstruction around 10 cm, the probability of nest site occupancy plateaus around 0%. Using Akaike’s Information Criterion (AIC), we determined the best model was was visual obstruction only because its' model (model2) had the lowest AIC. Since distance to prarie dog colony was not part of the best model, including it does not improve model fit, and we cannot say anything about the relationship between distance to prarie dog colony and probability of nest site occupancy. Visual obstruction makes it difficult for Mountain Plovers to see predators and will not survive in these sites, which is why it decreases probability of nest site occupancy. The article discusses that there is some influence of prarie dog colonies on nest site occupancy as prarie dogs engineer their ecosystem and decrease vosual obstruction, though distance to prarie dog colony was not included in the best model.
 
 # Problem 4. Affective and exploratory visualizations
 
