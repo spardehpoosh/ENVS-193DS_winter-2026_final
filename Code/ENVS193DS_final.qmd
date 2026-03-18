@@ -435,11 +435,11 @@ reading_clean |>
 ggplot(data = reading_clean, # starting with my data clean
        aes(x = school_day, # school day on x axis
            y = duration_minutes, # reading duration in minutes on y axis
-           color = school_day
+           color = school_day # different colors of school day and non school day
        )) +
   geom_boxplot() + # second layer: boxplot
-  geom_jitter(height = 0, # adding horizontal jitter
-              width = 0.3) + 
+  geom_jitter(height = 0, # no vertical jitter
+              width = 0.3) + # horizontal spread of points
    scale_color_manual(
     values = c("No" = "seagreen4", # coloring box and points for non school days in sea green
                "Yes" = "lightpink2") # coloring box and points for yes school days in light pink
@@ -454,7 +454,7 @@ ggplot(data = reading_clean, # starting with my data clean
 ```
 
 ## e. 
-**Figure 1: There is no obvious difference in central tendancies of reading duration on school days vs non school days.** Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh 
+**Figure 1: There is no obvious difference in central tendancies of reading duration on school days vs non school days.** Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. 1.5 times this interquartile range is shown above and below the box with the whiskers. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh 
 
 ## f. Write results
 We found a negligible difference (Cliff's /$delta$ = 0.0238) in reading duration on school days (n = 23, median = 12.5) and non-school days (n = 11, median = 13). (Wilcoxon rank-sum test, W = 124, p = 0.923, α = 0.05). Median reading duration did not differ between school days (12.5) and non-school days (13). 
