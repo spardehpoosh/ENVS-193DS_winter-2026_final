@@ -46,11 +46,11 @@ In part 2, they used a Kruskal-Wallis test to determine whether medians differed
 
 ## b. Figure needed
 
-I would suggest that my coworkers includes a box plot comparing median flooded wetland area across the five water year classifications. The y-axis would have the flooded wetland area (m^2^), while the x axis would label the five water classifications. There would be five boxes on the plot. Each of the five would have a line for the median, with upper and lower quartiles at the top and bottom of the box. Individual data points would be layed on top of the box plots to visualize the raw data. 
+I would suggest that my coworkers includes a box plot comparing median flooded wetland area across the five water year classifications. The y-axis would have the flooded wetland area (m^2^), while the x axis would label the five water classifications. There would be five boxes on the plot. Each of the five would have a line for the median, with upper and lower quartiles at the top and bottom of the box. There would also be whiskers representing 1.5* the interquartile range above and below the median. Individual data points would be layed on top of the box plots to visualize the raw data. There should be different colors for each of the five water year classifications to improve visual clarity, along with the label of the water year clasification. 
 
 ## c. Suggestions for rewriting
 
-Flooded wetland area (m^2^) did not change with precipitation (linear regression, F(df, df) = test statistic, R^2^ = coefficient of determination, p = 0.11, $\alpha$ = significance level). 
+Flooded wetland area (m^2^) did not change with precipitation (linear regression, F(df model, df residual) = test statistic, R^2^ = coefficient of determination, p = 0.11, $\alpha$ = significance level). 
 Median flooded wetland area (m^2^) did not differ among water year clasifications  (wet, above normal, below normal, dry, critical drought) (Kruskal-Wallis test, $\chi$^2^(df) = test statistic, p = 0.12, $\alpha$ = significance level).
 
 
@@ -83,6 +83,8 @@ kelp_clean <- kelp |>  # creating kelp_clean data set from kelp data
   ungroup() # ungrouping for proceeding operations
 
 slice_sample(kelp_clean, n=5) # displaying 5 random rows of the summarized and cleaned data frame 
+
+str(kelp_clean) # display structure
 
 ```
 
