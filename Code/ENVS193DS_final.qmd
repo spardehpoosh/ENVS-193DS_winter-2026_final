@@ -18,6 +18,7 @@ execute:
 #| label: reading in packages and data
 #| message: false
 
+# reading in packages
 library(tidyverse) # general use
 library(janitor) # cleaning data frames
 library(here) # file/folder organization
@@ -45,7 +46,7 @@ In part 2, they used a Kruskal-Wallis test to determine whether medians differed
 
 ## b. Figure needed
 
-I would suggest that my coworkers includes a box plot comparing median flooded wetland area across the five water year classifications. The y-axis would have the flooded wetland area (m^2^), while the x axis would label the five water classifications. There would be five boxes on the plot. Each of the five would have a line for the median, with upper and lower quartiles at the top and bottom of the box. There would also be whiskers representing 1.5* the interquartile range above and below the median. Individual data points would be layed on top of the box plots to visualize the raw data. There should be different colors for each of the five water year classifications to improve visual clarity, along with the label of the water year clasification. 
+I would suggest that my coworkers includes a box plot comparing median flooded wetland area across the five water year classifications. The y-axis would have the flooded wetland area (m^2^), while the x axis would label the five water classifications. There would be five boxes on the plot, one for each water classification. Each of the five would have a line for the median, with upper and lower quartiles at the top and bottom of the box. There would also be whiskers representing 1.5 times the interquartile range above and below the median. Individual data points would be layered on top of the box plots to visualize the raw data. There should be different colors for each of the five water year classifications to improve visual clarity.
 
 ## c. Suggestions for rewriting
 
@@ -172,8 +173,6 @@ Distance to prarie dog colony edge (edgedist) is also a continuous numerical var
 
 ## c. Table of models
 
-4 models:
-
 | Model number | Visual Obstruction | Distance to Prarie Dog Colony |      Predictor list         |  
 |--------------|:------------------:|:-----------------------------:|:---------------------------:|  
 | 0            |                    |                               | no predictors (null model)  |
@@ -184,7 +183,7 @@ Distance to prarie dog colony edge (edgedist) is also a continuous numerical var
 
 ## d. Run the models
 
-#### cleaning
+#### Cleaning
 ```{r}
 #| label: cleaning
 
@@ -200,7 +199,7 @@ mopl_clean <- mopl |> # starting with mopl data
 
 ```
 
-#### model fitting
+#### Model fitting
 ```{r}
 #| label: model fitting
 
@@ -244,7 +243,7 @@ AICc(
   arrange(AICc)
 ```
 
-The best model as determined by Akaike’s Information Criterion (AIC) was visual obstruction because its' model (model2) had the lowest AIC (AIC = 331.81). 
+The best model as determined by Akaike’s Information Criterion (AIC) was visual obstruction because its' model (model2) had the lowest AIC (AIC = 331.81). This model had a lower AIC than the saturated model with visual obstruction and distance to prarie dog colony edge, and the model containing only distance to prarie dog colony edge, and the null model. 
 
 ## f. Check diagnostics
 
@@ -252,11 +251,8 @@ The best model as determined by Akaike’s Information Criterion (AIC) was visua
 #| label: Check diagnostics
 
 # Simulate residuals for best model (model2)
-residuals2 <- simulateResiduals(model2) # visual obstruction only
+plot(residuals2 <- simulateResiduals(model2)) # model 2 with visual obstruction only
 
-#plotting each residuals model separately
-
-plot(residuals2)
 ```
 
 Diagnostics look good according to simulated residuals from the DHARMa package. According to the DHARMa residuals, the residuals (standing in for errors) look normally distributed based on qqplot on the left. There are no significant problems detected on the residuals vs predicted plot on the right.
@@ -293,12 +289,11 @@ ggplot(mopl_clean, # starting will mopl_clean data set
                 y = predicted), # y-axis is predicted Mountain Plover nest site use
             color = "blue") + # color for line
   scale_y_continuous(limits = c(0,1), 
-                     breaks = c(0,1)) +
-  labs(x = "Visual Obstruction (cm)", 
-       y = "Probability of nest site occupancy (1 = Yes, 0 = No)",
-       title = "Mountain Plover nest site use and predictions") +
- # remove gridlines and apply clean theme
-  theme_light() +
+                     breaks = c(0,1)) + # restrict y-axis to probabilities (0–1) and show only endpoints
+  labs(x = "Visual Obstruction (cm)", # relabelling x-axis
+       y = "Probability of nest site occupancy (1 = Yes, 0 = No)", # relabelling y-axis
+       title = "Mountain Plover nest site use and predictions") + # adding title
+  theme_light() + # changing theme to light
   theme(panel.grid = element_blank()) # remove any remaining gridlines
 
 ```
