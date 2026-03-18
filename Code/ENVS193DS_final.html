@@ -259,13 +259,13 @@ window.Quarto = {
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(kelp_clean, <span class="at">n=</span><span class="dv">5</span>) <span class="co"># displaying 5 random rows of the summarized and cleaned data frame </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
-  site_name    year mean_fronds
-  &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Naples       2013        9.20
-2 Isla Vista   2007       23.6 
-3 Carpinteria  2001        4.42
-4 Carpinteria  2023        4.50
-5 Isla Vista   2006       11.6 </code></pre>
+  site_name   year mean_fronds
+  &lt;fct&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+1 Naples      2020        7.41
+2 Isla Vista  2024       10.3 
+3 Naples      2018       17.7 
+4 Isla Vista  2011        9.63
+5 Naples      2002        3.01</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(kelp_clean) <span class="co"># display structure</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -540,7 +540,7 @@ vo_nest | Predicted |     95% CI
 </section>
 <section id="b.-designing-an-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="b.-designing-an-analysis">b. Designing an analysis</h2>
-<p>Since my research question is “do I read more on school days or non school days” I wanted to compare central tendancy of reading duration on school vs non school days. Reading duration is a continous discrete variable, whiel reading day (yes/no) is a categorical binomial variable. I was considering using a two-sample t-test, but the qqplot and histogram shows my data is not normally distributed and my sample size is small (n = 34), so I decided to use the Mann-Whitney U test (aka Wilcoxon rank-sum test) to see if there is a difference in median reading duration on school vs non school days. This is the non-parametric version meaning it doesn’t rely on the normal distribution and compares ranks rather than actual values.</p>
+<p>Since my research question is “do I read more on school days or non school days” I wanted to compare central tendency of reading duration on school vs non school days. Reading duration is a continuous discrete variable, while reading day (yes/no) is a categorical binomial variable. I was considering using a two-sample t-test, but the qqplot and histogram shows my data is not normally distributed and my sample size is small (n = 34), so I decided to use the Mann-Whitney U test (aka Wilcoxon rank-sum test) to see if there is a difference in median reading duration on school vs non school days. This is the non-parametric version meaning it doesn’t rely on the normal distribution and compares ranks rather than actual values.</p>
 </section>
 <section id="c.-test-assumptions-and-run-the-test" class="level2">
 <h2 class="anchored" data-anchor-id="c.-test-assumptions-and-run-the-test">c.&nbsp;Test assumptions and run the test</h2>
@@ -566,7 +566,7 @@ vo_nest | Predicted |     95% CI
 </div>
 </div>
 <p>Looking at the histograms it seems that the distributions are similar in shape.</p>
-<p>Assumptions of random sample and similar shapes are met. Aditionally, reading duration is continous and observations are independent by study design.</p>
+<p>Assumptions of random sample and similar shapes are met. Aditionally, reading duration is continuous and observations are independent by study design.</p>
 </section>
 <section id="run-test" class="level3">
 <h3 class="anchored" data-anchor-id="run-test">Run test</h3>
@@ -576,9 +576,9 @@ vo_nest | Predicted |     95% CI
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>reading_clean <span class="ot">&lt;-</span> reading <span class="sc">|&gt;</span> <span class="co"># new object from original data frame </span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="co"># clean column names</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># now run test</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># now run Mann-Whitney U test (aka Wilcoxon rank-sum test)</span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(duration_minutes <span class="sc">~</span> school_day, </span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> reading_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> reading_clean) <span class="co"># using clean reading data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Wilcoxon rank sum test with continuity correction
@@ -592,8 +592,9 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 <section id="calculate-effect-size" class="level3">
 <h3 class="anchored" data-anchor-id="calculate-effect-size">Calculate effect size</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cliff.delta</span>(duration_minutes <span class="sc">~</span> school_day,</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> reading_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculating effect size with cliffs delta</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cliff.delta</span>(duration_minutes <span class="sc">~</span> school_day,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> reading_clean) <span class="co"># using clean reading data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Cliff's Delta
@@ -654,7 +655,7 @@ delta estimate: 0.02479339 (negligible)
 </section>
 <section id="e." class="level2">
 <h2 class="anchored" data-anchor-id="e.">e.</h2>
-<p><strong>Figure 1: There is no obvious difference in central tendancies of reading duration on school days vs non school days.</strong> Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. 1.5 times this interquartile range is shown above and below the box with the whiskers. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh</p>
+<p><strong>Figure 2: There is no obvious difference in central tendancies of reading duration on school days vs non school days.</strong> Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. 1.5 times this interquartile range is shown above and below the box with the whiskers. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh</p>
 </section>
 <section id="f.-write-results" class="level2">
 <h2 class="anchored" data-anchor-id="f.-write-results">f.&nbsp;Write results</h2>

@@ -366,7 +366,7 @@ ggplot(data = reading_clean, # starting data frame
 
 ```
 
-Since my research question is "do I read more on school days or non school days" I wanted to compare central tendancy of reading duration on school vs non school days. Reading duration is a continous discrete variable, whiel reading day (yes/no) is a categorical binomial variable. I was considering using a two-sample t-test, but the qqplot and histogram shows my data is not normally distributed and my sample size is small (n = 34), so I decided to use the Mann-Whitney U test (aka Wilcoxon rank-sum test) to see if there is a difference in median reading duration on school vs non school days. This is the non-parametric version meaning it doesn't rely on the normal distribution and compares ranks rather than actual values.  
+Since my research question is "do I read more on school days or non school days" I wanted to compare central tendency of reading duration on school vs non school days. Reading duration is a continuous discrete variable, while reading day (yes/no) is a categorical binomial variable. I was considering using a two-sample t-test, but the qqplot and histogram shows my data is not normally distributed and my sample size is small (n = 34), so I decided to use the Mann-Whitney U test (aka Wilcoxon rank-sum test) to see if there is a difference in median reading duration on school vs non school days. This is the non-parametric version meaning it doesn't rely on the normal distribution and compares ranks rather than actual values.  
 
 ## c. Test assumptions and run the test
 ### Check assumptions 
@@ -387,7 +387,7 @@ ggplot(data = reading_clean, # starting data frame
 ```
 Looking at the histograms it seems that the distributions are similar in shape. 
 
-Assumptions of random sample and similar shapes are met. Aditionally, reading duration is continous and observations are independent by study design. 
+Assumptions of random sample and similar shapes are met. Aditionally, reading duration is continuous and observations are independent by study design. 
 
 ### Run test
 Null hypothesis: 
@@ -398,9 +398,9 @@ Null hypothesis:
 reading_clean <- reading |> # new object from original data frame 
   clean_names() # clean column names
 
-# now run test
+# now run Mann-Whitney U test (aka Wilcoxon rank-sum test)
 wilcox.test(duration_minutes ~ school_day, 
-            data = reading_clean)
+            data = reading_clean) # using clean reading data
 
 ```
 
@@ -408,8 +408,9 @@ wilcox.test(duration_minutes ~ school_day,
 ```{r}
 #| label: effect size with cliff's delta
 
+# calculating effect size with cliffs delta
 cliff.delta(duration_minutes ~ school_day,
-             data = reading_clean)
+             data = reading_clean) # using clean reading data
 
 ```
 
@@ -451,7 +452,7 @@ ggplot(data = reading_clean, # starting with my data clean
 ```
 
 ## e. 
-**Figure 1: There is no obvious difference in central tendancies of reading duration on school days vs non school days.** Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. 1.5 times this interquartile range is shown above and below the box with the whiskers. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh 
+**Figure 2: There is no obvious difference in central tendancies of reading duration on school days vs non school days.** Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. 1.5 times this interquartile range is shown above and below the box with the whiskers. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh 
 
 ## f. Write results
 We found a negligible difference (Cliff's $\delta$ = 0.0238) in reading duration on school days (n = 23, median = 12.5) and non-school days (n = 11, median = 13). (Wilcoxon rank-sum test, W = 124, p = 0.923, α = 0.05). Median reading duration did not differ between school days (median = 12.5) and non-school days (median = 13). 
