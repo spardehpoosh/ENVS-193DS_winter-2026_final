@@ -260,7 +260,7 @@ residuals2 <- simulateResiduals(model2) # visual obstruction only
 plot(residuals2)
 ```
 
-According to the DHARMa residuals, the residuals (standing in for errors) look normally distributed based on qqplot on the left. There are no significant problems detected on the residuals vs predicted plot on the right.
+Diagnostics look good according to simulated residuals from the DHARMa package. According to the DHARMa residuals, the residuals (standing in for errors) look normally distributed based on qqplot on the left. There are no significant problems detected on the residuals vs predicted plot on the right.
 
 ## g. Visualize model predictions
 
@@ -321,7 +321,7 @@ ggpredict(model2, #use ggpredict which automatically uses 95% confidence interva
 
 ## j. Interpret your results
 
-The probability of nest site occupancy at 0 visual obstruction is 73%. This means when there is no visual obstruction, the probability of nest site occupancy is 73%. As seen in the figure in part g, as visual obstruction increases, probability of nest site occupancy decreases. It can also be observed that at a certain point of visual obstruction around 10 cm, the probability of nest site occupancy plateaus around 0%. Using Akaike’s Information Criterion (AIC), we determined the best model was was visual obstruction only because its' model (model2) had the lowest AIC. Since distance to prarie dog colony was not part of the best model, including it does not improve model fit, and we cannot say anything about the relationship between distance to prarie dog colony and probability of nest site occupancy. Visual obstruction makes it difficult for Mountain Plovers to see predators and will not survive in these sites, which is why it decreases probability of nest site occupancy. The article discusses that there is some influence of prarie dog colonies on nest site occupancy as prarie dogs engineer their ecosystem and decrease vosual obstruction, though distance to prarie dog colony was not included in the best model.
+The probability of nest site occupancy at 0 visual obstruction is 73% (95% CI: 0.65, 0.80). This means when there is no visual obstruction, the probability of nest site occupancy is 73%. As seen in the figure in part g, as visual obstruction increases, probability of nest site occupancy decreases. It can also be observed that at a certain point of visual obstruction around 10 cm, the probability of nest site occupancy plateaus around 0%. Using Akaike’s Information Criterion (AIC), we determined the best model was was visual obstruction only because its' model (model2) had the lowest AIC. Since distance to prarie dog colony was not part of the best model, including it does not improve model fit, and we cannot say anything about the relationship between distance to prarie dog colony and probability of nest site occupancy. Visual obstruction makes it difficult for Mountain Plovers to see predators and will not survive in these sites, which is why it decreases probability of nest site occupancy. The article discusses that there is some influence of prarie dog colonies on nest site occupancy as prarie dogs engineer their ecosystem and decrease vosual obstruction, though distance to prarie dog colony was not included in the best model.
 
 # Problem 4. Affective and exploratory visualizations
 

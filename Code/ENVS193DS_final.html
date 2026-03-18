@@ -259,13 +259,13 @@ window.Quarto = {
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(kelp_clean, <span class="at">n=</span><span class="dv">5</span>) <span class="co"># displaying 5 random rows of the summarized and cleaned data frame </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
-  site_name    year mean_fronds
-  &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Isla Vista   2001        6.5 
-2 Naples       2014        8.76
-3 Carpinteria  2019        3.37
-4 Isla Vista   2022       38.3 
-5 Carpinteria  2014        7.26</code></pre>
+  site_name   year mean_fronds
+  &lt;fct&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+1 Naples      2021       10.5 
+2 Isla Vista  2007       23.6 
+3 Isla Vista  2015        8.77
+4 Isla Vista  2011        9.63
+5 Naples      2014        8.76</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(kelp_clean) <span class="co"># display structure</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -464,7 +464,7 @@ model3  2 386.1351</code></pre>
 </div>
 </div>
 </div>
-<p>According to the DHARMa residuals, the residuals (standing in for errors) look normally distributed based on qqplot on the left. There are no significant problems detected on the residuals vs predicted plot on the right.</p>
+<p>Diagnostics look good according to simulated residuals from the DHARMa package. According to the DHARMa residuals, the residuals (standing in for errors) look normally distributed based on qqplot on the left. There are no significant problems detected on the residuals vs predicted plot on the right.</p>
 </section>
 <section id="g.-visualize-model-predictions" class="level2">
 <h2 class="anchored" data-anchor-id="g.-visualize-model-predictions">g. Visualize model predictions</h2>
@@ -532,7 +532,7 @@ vo_nest | Predicted |     95% CI
 </section>
 <section id="j.-interpret-your-results" class="level2">
 <h2 class="anchored" data-anchor-id="j.-interpret-your-results">j. Interpret your results</h2>
-<p>The probability of nest site occupancy at 0 visual obstruction is 73%. This means when there is no visual obstruction, the probability of nest site occupancy is 73%. As seen in the figure in part g, as visual obstruction increases, probability of nest site occupancy decreases. It can also be observed that at a certain point of visual obstruction around 10 cm, the probability of nest site occupancy plateaus around 0%. Using Akaike’s Information Criterion (AIC), we determined the best model was was visual obstruction only because its’ model (model2) had the lowest AIC. Since distance to prarie dog colony was not part of the best model, including it does not improve model fit, and we cannot say anything about the relationship between distance to prarie dog colony and probability of nest site occupancy. Visual obstruction makes it difficult for Mountain Plovers to see predators and will not survive in these sites, which is why it decreases probability of nest site occupancy. The article discusses that there is some influence of prarie dog colonies on nest site occupancy as prarie dogs engineer their ecosystem and decrease vosual obstruction, though distance to prarie dog colony was not included in the best model.</p>
+<p>The probability of nest site occupancy at 0 visual obstruction is 73% (95% CI: 0.65, 0.80). This means when there is no visual obstruction, the probability of nest site occupancy is 73%. As seen in the figure in part g, as visual obstruction increases, probability of nest site occupancy decreases. It can also be observed that at a certain point of visual obstruction around 10 cm, the probability of nest site occupancy plateaus around 0%. Using Akaike’s Information Criterion (AIC), we determined the best model was was visual obstruction only because its’ model (model2) had the lowest AIC. Since distance to prarie dog colony was not part of the best model, including it does not improve model fit, and we cannot say anything about the relationship between distance to prarie dog colony and probability of nest site occupancy. Visual obstruction makes it difficult for Mountain Plovers to see predators and will not survive in these sites, which is why it decreases probability of nest site occupancy. The article discusses that there is some influence of prarie dog colonies on nest site occupancy as prarie dogs engineer their ecosystem and decrease vosual obstruction, though distance to prarie dog colony was not included in the best model.</p>
 </section>
 </section>
 <section id="problem-4.-affective-and-exploratory-visualizations" class="level1">
