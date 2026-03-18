@@ -123,7 +123,7 @@ ggplot(data = kelp_clean, # making figure from kelp_clean data set
 
 ## d. Interpretation
 
-According to the figure, Isla Vista is the site that has the most variable mean kelp fronds per year, while Carpinteria seems to have the least variable mean kelp fronds per year. 
+According to the figure, Isla Vista is the site that has the most variable mean kelp fronds per year. This is clear because the high peak mean kelp fronds per year for Isla Vista are much higher and frequent than for the other sites. It sees Carpinteria has the least variable mean kelp fronds per year. I can tell because it only has two high peak mean kelp fronds per year (above around 11) while Naples has 3 of these peaks above 11 mean kelp fronds per year. Since it has fewer peaks, and a smaller range of mean kelp fronds per year, it is clear that Carpernteria is the least variable.
 
 # Problem 3. Data Analysis
 
