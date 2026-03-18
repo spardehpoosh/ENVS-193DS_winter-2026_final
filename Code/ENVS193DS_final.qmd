@@ -454,7 +454,7 @@ ggplot(data = reading_clean, # starting with my data clean
 **Figure 1: There is no obvious difference in central tendancies of reading duration on school days vs non school days.** Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. 1.5 times this interquartile range is shown above and below the box with the whiskers. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh 
 
 ## f. Write results
-We found a negligible difference (Cliff's $\delta$ = 0.0238) in reading duration on school days (n = 23, median = 12.5) and non-school days (n = 11, median = 13). (Wilcoxon rank-sum test, W = 124, p = 0.923, α = 0.05). Median reading duration did not differ between school days (12.5) and non-school days (13). 
+We found a negligible difference (Cliff's $\delta$ = 0.0238) in reading duration on school days (n = 23, median = 12.5) and non-school days (n = 11, median = 13). (Wilcoxon rank-sum test, W = 124, p = 0.923, α = 0.05). Median reading duration did not differ between school days (median = 12.5) and non-school days (median = 13). 
 
 
 ## g. Sharing affective visualization 
