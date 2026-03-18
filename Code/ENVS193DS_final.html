@@ -145,6 +145,17 @@ window.Quarto = {
   <li><a href="#problem-4.-affective-and-exploratory-visualizations" id="toc-problem-4.-affective-and-exploratory-visualizations" class="nav-link" data-scroll-target="#problem-4.-affective-and-exploratory-visualizations">Problem 4. Affective and exploratory visualizations</a>
   <ul class="collapse">
   <li><a href="#a.-comparing-visualizations" id="toc-a.-comparing-visualizations" class="nav-link" data-scroll-target="#a.-comparing-visualizations">a. Comparing visualizations</a></li>
+  <li><a href="#b.-designing-an-analysis" id="toc-b.-designing-an-analysis" class="nav-link" data-scroll-target="#b.-designing-an-analysis">b. Designing an analysis</a></li>
+  <li><a href="#c.-test-assumptions-and-run-the-test" id="toc-c.-test-assumptions-and-run-the-test" class="nav-link" data-scroll-target="#c.-test-assumptions-and-run-the-test">c.&nbsp;Test assumptions and run the test</a>
+  <ul class="collapse">
+  <li><a href="#check-assumptions" id="toc-check-assumptions" class="nav-link" data-scroll-target="#check-assumptions">Check assumptions</a></li>
+  <li><a href="#run-test" id="toc-run-test" class="nav-link" data-scroll-target="#run-test">Run test</a></li>
+  <li><a href="#calculate-effect-size" id="toc-calculate-effect-size" class="nav-link" data-scroll-target="#calculate-effect-size">Calculate effect size</a></li>
+  </ul></li>
+  <li><a href="#d.-create-visualization" id="toc-d.-create-visualization" class="nav-link" data-scroll-target="#d.-create-visualization">d.&nbsp;Create visualization</a></li>
+  <li><a href="#e." id="toc-e." class="nav-link" data-scroll-target="#e.">e.</a></li>
+  <li><a href="#f.-write-results" id="toc-f.-write-results" class="nav-link" data-scroll-target="#f.-write-results">f.&nbsp;Write results</a></li>
+  <li><a href="#g.-sharing-affective-visualization" id="toc-g.-sharing-affective-visualization" class="nav-link" data-scroll-target="#g.-sharing-affective-visualization">g. Sharing affective visualization</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -196,11 +207,12 @@ window.Quarto = {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects) <span class="co"># getting model predictions</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn) <span class="co"># model selection</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa) <span class="co"># model diagnostics</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>kelp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"kelp_data.csv"</span>)) <span class="co"># storing kelp data as an object called kelp for problem 2</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>mopl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"MOPL_nest-site_selection_Duchardt_et_al._2019.csv"</span>)) <span class="co"># storing data for problem 3 as an object called mopl</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>reading <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"personal_data.csv"</span>)) <span class="co"># storing personal data as an object called reading for problem 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effsize) <span class="co"># effect size for problem 4</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>kelp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"kelp_data.csv"</span>)) <span class="co"># storing kelp data as an object called kelp for problem 2</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>mopl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"MOPL_nest-site_selection_Duchardt_et_al._2019.csv"</span>)) <span class="co"># storing data for problem 3 as an object called mopl</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>reading <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"personal_data.csv"</span>)) <span class="co"># storing personal data as an object called reading for problem 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="problem-1.-research-writing" class="level1">
@@ -249,11 +261,11 @@ window.Quarto = {
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Isla Vista   2016        7.74
-2 Carpinteria  2014        7.26
-3 Carpinteria  2009        9.43
-4 Isla Vista   2007       23.6 
-5 Isla Vista   2022       38.3 </code></pre>
+1 Naples       2000        1.89
+2 Isla Vista   2023        3.78
+3 Isla Vista   2012       12.8 
+4 Carpinteria  2002        9.79
+5 Naples       2016        7.26</code></pre>
 </div>
 </div>
 </section>
@@ -304,7 +316,7 @@ window.Quarto = {
 <h1>Problem 3. Data Analysis</h1>
 <section id="a.-response-variable" class="level2">
 <h2 class="anchored" data-anchor-id="a.-response-variable">a. Response variable</h2>
-<p>0s represent an unused, available site, where 1s represent sites that were used.</p>
+<p>For our models we will use 0s to represent an unused, available site, and 1s to represent sites that were used.</p>
 </section>
 <section id="b.-purpose-of-study" class="level2">
 <h2 class="anchored" data-anchor-id="b.-purpose-of-study">b. Purpose of study</h2>
@@ -483,6 +495,136 @@ vo_nest | Predicted |     95% CI
 <h1>Problem 4. Affective and exploratory visualizations</h1>
 <section id="a.-comparing-visualizations" class="level2">
 <h2 class="anchored" data-anchor-id="a.-comparing-visualizations">a. Comparing visualizations</h2>
+<p><strong>How are the visualizations different</strong> All of my visualizations show different combinations of variables and how they effect reading duration. My affective visualization doesn’t show exact duration, and rather shows reading duration relative to the mean. My visualizations from homework two are more exact, and show precise numbers. My second exploratory visualization from homework two investigates the relationship between average daily temperature and reading duration. This was a variable I chose to not include in my affective visualization as it was shown on the scatterplot that there was no relationship between temperature and reading duration.</p>
+<p><strong>What similarities do you see between all your visualizations?</strong> All of my visualizations show reading duration. Aditionally, the first exploratory visualization in homework 2 compares reading duration on school days vs non school days. This is also shown in my affective visualization as the shelf on the left is school days, and on the right is non school days. The box plot in homework 2 shows the median and central tendancy, and the line above my bookshelf in my affective visualization shows the mean reading duration. This visualization from homework 2 shows similar data to my affective visualization, just presented in a different way.</p>
+<p><strong>What patterns (e.g.&nbsp;differences in means/counts/proportions/medians, trends through time, relationships between variables) do you see in each visualization? Are these different between visualizations? If so, why? If not, why not?</strong> All of my visualizations showed few patterns in reading duration. I did see more outliers in reading duration on non school days, because I had more time to have long reading sessions during the day when I did not have school. This was most apparent in my affective visualization as the tallest books really stood out, and there was more of them on the right shelf of non-school days.</p>
+<p><strong>What kinds of feedback did you get during week 9 in workshop or from the instructors?</strong> One of the peices of feedback I recieved from An was that the height of books should be relative to something rather than just being arbitrary heights. I used this suggested and decided to have a think line for the mean that heights could be relative to. She also suggested that I include another variable, like number of assignments, in my affective visualization on top or reading duration, school day, and book. As she suggested, I decided to have the width of the books correspond to the number of assignments I was working on that day.</p>
+</section>
+<section id="b.-designing-an-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="b.-designing-an-analysis">b. Designing an analysis</h2>
+<p>Since my research question is “do I read more on school days or non school days” I wanted to compare central tendancy of reading duration on school vs non school days. Reading duration is a continous discrete variable, whiel reading day (yes/no) is a categorical binomial variable. I was considering using a two-sample t-test, but the qqplot and histogram shows my data is not normally distributed and my sample size is small (n = 34), so I decided to use the Mann-Whitney U test (aka Wilcoxon rank-sum test) to see if there is a difference in median reading duration on school vs non school days. This is the non-parametric version meaning it doesn’t rely on the normal distribution and compares ranks rather than actual values.</p>
+</section>
+<section id="c.-test-assumptions-and-run-the-test" class="level2">
+<h2 class="anchored" data-anchor-id="c.-test-assumptions-and-run-the-test">c.&nbsp;Test assumptions and run the test</h2>
+<section id="check-assumptions" class="level3">
+<h3 class="anchored" data-anchor-id="check-assumptions">Check assumptions</h3>
+<p>The assumptions for this test are a random sample which is assumed by study design, and that distributions are similar in shape.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># base layer: ggplot</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> reading_clean, <span class="co"># starting data frame</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> duration_minutes, <span class="co"># stem length is the x-axis</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> school_day)) <span class="sc">+</span> <span class="co"># filing columns by watershed</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">9</span>, <span class="co"># creating a histogram with 4 bins</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> <span class="co"># outlining bins in black</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> school_day) <span class="sc">+</span> <span class="co"># creating seperate panels for watershed</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span> <span class="co"># using a different theme from the default</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="co"># taking out the legend</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ENVS193DS_final_files/figure-html/histrogram%20for%20normality%20of%20distributions-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Looking at the histograms it seems that the distributions are similar in shape.</p>
+<p>Assumptions of random sample and similar shapes are met. Aditionally, reading duration is continous and observations are independent by study design.</p>
+</section>
+<section id="run-test" class="level3">
+<h3 class="anchored" data-anchor-id="run-test">Run test</h3>
+<p>Null hypothesis:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cleaning data</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>reading_clean <span class="ot">&lt;-</span> reading <span class="sc">|&gt;</span> <span class="co"># new object from original data frame </span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="co"># clean column names</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># now run test</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(duration_minutes <span class="sc">~</span> school_day, </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> reading_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  duration_minutes by school_day
+W = 124, p-value = 0.923
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+</section>
+<section id="calculate-effect-size" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-effect-size">Calculate effect size</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cliff.delta</span>(duration_minutes <span class="sc">~</span> school_day,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> reading_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Cliff's Delta
+
+delta estimate: 0.02479339 (negligible)
+95 percent confidence interval:
+     lower      upper 
+-0.3941544  0.4352099 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>reading_clean <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(school_day) <span class="sc">|&gt;</span> <span class="co"># group by school day vs non school day</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(duration_minutes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># calculate median reading duration exluding NA values</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>() <span class="co"># count number of reading sessions per group</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  school_day median     n
+  &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;
+1 No           13      11
+2 Yes          12.5    23</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="d.-create-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="d.-create-visualization">d.&nbsp;Create visualization</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># base layer: ggplot</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> reading_clean, <span class="co"># starting with my data clean</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> school_day, <span class="co"># school day on x axis</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> duration_minutes, <span class="co"># reading duration in minutes on y axis</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> school_day</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>       )) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="co"># second layer: boxplot</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> <span class="dv">0</span>, <span class="co"># adding horizontal jitter</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">width =</span> <span class="fl">0.3</span>) <span class="sc">+</span> </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_color_manual</span>(</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"No"</span> <span class="ot">=</span> <span class="st">"seagreen4"</span>, <span class="co"># coloring box and points for non school days in sea green</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Yes"</span> <span class="ot">=</span> <span class="st">"lightpink2"</span>) <span class="co"># coloring box and points for yes school days in light pink</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"School Day"</span>, <span class="co"># relabelling x-axis</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Reading Duration (minutes)"</span>, <span class="co"># relabelling y-axis</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Reading Duration Does not Differ Between School Days and Non School Days"</span>)<span class="sc">+</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="co"># changing the gg plot theme</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="co"># removing the legend </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ENVS193DS_final_files/figure-html/boxplot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="e." class="level2">
+<h2 class="anchored" data-anchor-id="e.">e.</h2>
+<p><strong>Figure 1: There is no obvious difference in central tendancies of reading duration on school days vs non school days.</strong> Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh</p>
+</section>
+<section id="f.-write-results" class="level2">
+<h2 class="anchored" data-anchor-id="f.-write-results">f.&nbsp;Write results</h2>
+<p>We found a negligible difference (Cliff’s /<span class="math inline">\(delta\)</span> = 0.0238) in reading duration on school days (n = 23, median = 12.5) and non-school days (n = 11, median = 13). (Wilcoxon rank-sum test, W = 124, p = 0.923, α = 0.05). Median reading duration did not differ between school days (12.5) and non-school days (13).</p>
+</section>
+<section id="g.-sharing-affective-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="g.-sharing-affective-visualization">g. Sharing affective visualization</h2>
+<p>I attended class and showed my affective visualization in week 10 section.</p>
 </section>
 </section>
 

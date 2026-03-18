@@ -26,6 +26,7 @@ library(scales) # modifying axis labels
 library(ggeffects) # getting model predictions
 library(MuMIn) # model selection
 library(DHARMa) # model diagnostics
+library(effsize) # effect size for problem 4
 
 # reading in data
 kelp <- read_csv(here("data", "kelp_data.csv")) # storing kelp data as an object called kelp for problem 2
@@ -160,7 +161,7 @@ slice_sample(
 
 ## a. Response variable
 
-0s represent an unused, available site, where 1s represent sites that were used. 
+For our models we will use 0s to represent an unused, available site, and 1s to represent sites that were used. 
 
 ## b. Purpose of study
 
@@ -323,16 +324,144 @@ The probability of nest site occupancy at 0 visual obstruction is 73%. This mean
 
 ## a. Comparing visualizations
 
+**How are the visualizations different** All of my visualizations show different combinations of variables and how they effect reading duration. My affective visualization doesn't show exact duration, and rather shows reading duration relative to the mean. My visualizations from homework two are more exact, and show precise numbers. My second exploratory visualization from homework two investigates the relationship between average daily temperature and reading duration. This was a variable I chose to not include in my affective visualization as it was shown on the scatterplot that there was no relationship between temperature and reading duration. 
+
+**What similarities do you see between all your visualizations?** All of my visualizations show reading duration. Aditionally, the first exploratory visualization in homework 2 compares reading duration on school days vs non school days. This is also shown in my affective visualization as the shelf on the left is school days, and on the right is non school days. The box plot in homework 2 shows the median and central tendancy, and the line above my bookshelf in my affective visualization shows the mean reading duration. This visualization from homework 2 shows similar data to my affective visualization, just presented in a different way. 
+
+**What patterns (e.g. differences in means/counts/proportions/medians, trends through time, relationships between variables) do you see in each visualization? Are these different between visualizations? If so, why? If not, why not?** All of my visualizations showed few patterns in reading duration. I did see more outliers in reading duration on non school days, because I had more time to have long reading sessions during the day when I did not have school. This was most apparent in my affective visualization as the tallest books really stood out, and there was more of them on the right shelf of non-school days.
+
+**What kinds of feedback did you get during week 9 in workshop or from the instructors?** One of the peices of feedback I recieved from An was that the height of books should be relative to something rather than just being arbitrary heights. I used this suggested and decided to have a think line for the mean that heights could be relative to. She also suggested that I include another variable, like number of assignments, in my affective visualization on top or reading duration, school day, and book. As she suggested, I decided to have the width of the books correspond to the number of assignments I was working on that day. 
 
 
+## b. Designing an analysis
+
+```{r}
+#| label: normality qqplot
+#| include: false
+
+reading_clean <- reading |> 
+  clean_names()
+
+ggplot(data = reading_clean, # starting data frame
+       aes(sample = duration_minutes, # y-axis for a qq plot
+           color = school_day)) + # coloring points by school day 
+  geom_qq_line(color = "blue") + # reference line in blue
+  geom_qq() + # points on qqplot
+  facet_wrap(~ school_day) + # creating two panels, one for no school day and other for yes school day
+  theme(legend.position = "none")
+
+```
+
+```{r}
+#| label: normality histogram
+#| include: false
 
 
+# base layer: ggplot
+ggplot(data = reading_clean, # starting data frame
+       aes(x = duration_minutes, # stem length is the x-axis
+           fill = school_day)) + # filing columns by watershed
+  geom_histogram(bins = 9, # creating a histogram with 4 bins
+                 color = "black") + # outlining bins in black
+  facet_wrap(~ school_day) + # creating seperate panels for watershed
+  theme_light() + # using a different theme from the default
+  theme(legend.position = "none") # taking out the legend
+
+```
+
+Since my research question is "do I read more on school days or non school days" I wanted to compare central tendancy of reading duration on school vs non school days. Reading duration is a continous discrete variable, whiel reading day (yes/no) is a categorical binomial variable. I was considering using a two-sample t-test, but the qqplot and histogram shows my data is not normally distributed and my sample size is small (n = 34), so I decided to use the Mann-Whitney U test (aka Wilcoxon rank-sum test) to see if there is a difference in median reading duration on school vs non school days. This is the non-parametric version meaning it doesn't rely on the normal distribution and compares ranks rather than actual values.  
+
+## c. Test assumptions and run the test
+### Check assumptions 
+The assumptions for this test are a random sample which is assumed by study design, and that distributions are similar in shape. 
+
+```{r}
+#| label: histrogram for normality of distributions
+
+# base layer: ggplot
+ggplot(data = reading_clean, # starting data frame
+       aes(x = duration_minutes, # stem length is the x-axis
+           fill = school_day)) + # filing columns by watershed
+  geom_histogram(bins = 9, # creating a histogram with 4 bins
+                 color = "black") + # outlining bins in black
+  facet_wrap(~ school_day) + # creating seperate panels for watershed
+  theme_light() + # using a different theme from the default
+  theme(legend.position = "none") # taking out the legend
+```
+Looking at the histograms it seems that the distributions are similar in shape. 
+
+Assumptions of random sample and similar shapes are met. Aditionally, reading duration is continous and observations are independent by study design. 
+
+### Run test
+Null hypothesis: 
+```{r}
+#| label: wilcox test
+
+# cleaning data
+reading_clean <- reading |> # new object from original data frame 
+  clean_names() # clean column names
+
+# now run test
+wilcox.test(duration_minutes ~ school_day, 
+            data = reading_clean)
+
+```
+
+### Calculate effect size
+```{r}
+#| label: effect size with cliff's delta
+
+cliff.delta(duration_minutes ~ school_day,
+             data = reading_clean)
+
+```
+
+```{r}
+
+reading_clean |>
+  group_by(school_day) |> # group by school day vs non school day
+  summarize(
+    median = median(duration_minutes, na.rm = TRUE), # calculate median reading duration exluding NA values
+    n = n() # count number of reading sessions per group
+  )
+```
+
+## d. Create visualization
+
+```{r}
+#| label: boxplot
+
+# base layer: ggplot
+ggplot(data = reading_clean, # starting with my data clean
+       aes(x = school_day, # school day on x axis
+           y = duration_minutes, # reading duration in minutes on y axis
+           color = school_day
+       )) +
+  geom_boxplot() + # second layer: boxplot
+  geom_jitter(height = 0, # adding horizontal jitter
+              width = 0.3) + 
+   scale_color_manual(
+    values = c("No" = "seagreen4", # coloring box and points for non school days in sea green
+               "Yes" = "lightpink2") # coloring box and points for yes school days in light pink
+  ) + 
+  labs(
+    x = "School Day", # relabelling x-axis
+    y = "Reading Duration (minutes)", # relabelling y-axis
+    title = "Reading Duration Does not Differ Between School Days and Non School Days")+
+  theme_minimal() + # changing the gg plot theme
+  theme(legend.position = "none") # removing the legend 
+
+```
+
+## e. 
+**Figure 1: There is no obvious difference in central tendancies of reading duration on school days vs non school days.** Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh 
+
+## f. Write results
+We found a negligible difference (Cliff's /$delta$ = 0.0238) in reading duration on school days (n = 23, median = 12.5) and non-school days (n = 11, median = 13). (Wilcoxon rank-sum test, W = 124, p = 0.923, α = 0.05). Median reading duration did not differ between school days (12.5) and non-school days (13). 
 
 
-
-
-
-
+## g. Sharing affective visualization 
+I attended class and showed my affective visualization in week 10 section. 
 
 
 
