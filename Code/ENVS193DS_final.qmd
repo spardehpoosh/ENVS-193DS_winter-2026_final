@@ -21,7 +21,6 @@ execute:
 library(tidyverse) # general use
 library(janitor) # cleaning data frames
 library(here) # file/folder organization
-library(readxl) # reading .xlsx files
 library(scales) # modifying axis labels
 library(ggeffects) # getting model predictions
 library(MuMIn) # model selection

@@ -14,7 +14,7 @@ The data folder also includes MOPL_nest-site_selection_Duchardt_et_al._2019.csv 
 
 Finally, the data folder includes personal_data.csv which I collected myself.
 
-The code folder includes ENVS193DS_final.qmd which contains all code for running a test on picklweed salinity data, and creating updated visualizations for my personal data. 
+The code folder includes ENVS193DS_final.qmd which contains all code for running a test on, and creating visualizations. 
 
 ## Rendered output
 
