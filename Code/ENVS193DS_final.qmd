@@ -163,13 +163,13 @@ slice_sample(
 
 ## a. Response variable
 
-For our models we will use 0s to represent an unused, available site, and 1s to represent sites that were used. 
+For our models we will use 0s to represent an unused, available site, and 1s to represent sites that were used to measure the response variable (Mountain Plover nest site occupancy).  
 
 ## b. Purpose of study
 
-Visual obstruction is a continuous numerical variable. As visual obstruction increases, Mountain Plover nest site use would decrease because snowy plovers will not be able to see their predators. It should be noted that sparse vegetation and some visual obstruction is beneficial to snowy plovers as it provides concealment. I found this in the discussion part, "our selected model indicated that plovers avoided nesting in areas with a maximum vegetation height >11 cm, corresponding with an average visual obstruction of >5 cm". 
+Visual obstruction (vo_nest) is a continuous numerical variable. As visual obstruction increases, Mountain Plover nest site use would decrease because snowy plovers will not be able to see their predators. It should be noted that sparse vegetation and some visual obstruction is beneficial to snowy plovers as it provides concealment. I found this in the discussion part, "our selected model indicated that plovers avoided nesting in areas with a maximum vegetation height >11 cm, corresponding with an average visual obstruction of >5 cm". 
 
-Distance to prarie dog colony edge is also a continuous numerical variable. As distance to prarie dog colony edge increase, Plover nest site use would decrease because they both use the same resources and prarie dogs help engineer Plover habitats, but Plover use depends on size of the prarie dog colony. This was also found in the discussion section, "Our findings reinforce the importance of black-tailed prairie dogs as engineers of Mountain Plover habitat". 
+Distance to prarie dog colony edge (edgedist) is also a continuous numerical variable. As distance to prarie dog colony edge increase, Plover nest site use would decrease because they both use the same resources and prarie dogs help engineer Plover habitats, but Plover use depends on size of the prarie dog colony. This was also found in the discussion section, "Our findings reinforce the importance of black-tailed prairie dogs as engineers of Mountain Plover habitat". 
 
 ## c. Table of models
 
@@ -179,11 +179,13 @@ Distance to prarie dog colony edge is also a continuous numerical variable. As d
 |--------------|:------------------:|:-----------------------------:|:---------------------------:|  
 | 0            |                    |                               | no predictors (null model)  |
 | 1            |          X         |              X                | all predictors (full model) | 
-| 2            |          X         |                               |             VO              |   
-| 3            |                    |              X                |          edgedist           |    
+| 2            |          X         |                               |   Visual obstruction only   |
+| 3            |                    |              X                | Distance to colony edge only
+|    
 
 ## d. Run the models
 
+#### cleaning
 ```{r}
 #| label: cleaning
 
@@ -199,10 +201,9 @@ mopl_clean <- mopl |> # starting with mopl data
 
 ```
 
-
+#### model fitting
 ```{r}
 #| label: model fitting
-#| include: false
 
 # model 0: null model
 model0 <-glm(
@@ -244,7 +245,7 @@ AICc(
   arrange(AICc)
 ```
 
-The best model as determined by Akaike’s Information Criterion (AIC) was visual obstruction because its' model (model2) had the lowest AIC. 
+The best model as determined by Akaike’s Information Criterion (AIC) was visual obstruction because its' model (model2) had the lowest AIC (AIC = 331.81). 
 
 ## f. Check diagnostics
 
@@ -459,7 +460,7 @@ ggplot(data = reading_clean, # starting with my data clean
 **Figure 1: There is no obvious difference in central tendancies of reading duration on school days vs non school days.** Median line is shown for the reading duration on non school days (green) and school days (pink). Upper and lower quartiles are shown above and below the median respectivley. 1.5 times this interquartile range is shown above and below the box with the whiskers. Points represent individual observations of reading duration on non school days (green) and school days (pink). Source: personal data collected by me, Sophie Pardehpoosh 
 
 ## f. Write results
-We found a negligible difference (Cliff's /$delta$ = 0.0238) in reading duration on school days (n = 23, median = 12.5) and non-school days (n = 11, median = 13). (Wilcoxon rank-sum test, W = 124, p = 0.923, α = 0.05). Median reading duration did not differ between school days (12.5) and non-school days (13). 
+We found a negligible difference (Cliff's $\delta$ = 0.0238) in reading duration on school days (n = 23, median = 12.5) and non-school days (n = 11, median = 13). (Wilcoxon rank-sum test, W = 124, p = 0.923, α = 0.05). Median reading duration did not differ between school days (12.5) and non-school days (13). 
 
 
 ## g. Sharing affective visualization 
